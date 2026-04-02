@@ -15,11 +15,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // create admin and sample members
+        $adminRole = \App\Models\Role::where('name', 'Admin')->first();
+        $memberRole = \App\Models\Role::where('name', 'Member')->first();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        if ($adminRole) {
+            User::factory()->create([
+                'name' => 'Admin User',
+                'email' => 'admin@example.com',
+                'role_id' => $adminRole->id,
+                'password' => bcrypt('password'),
+            ]);
+        }
+
+        if ($memberRole) {
+            User::factory()->create([
+                'name' => 'Member User',
+                'email' => 'member@example.com',
+                'role_id' => $memberRole->id,
+                'password' => bcrypt('password'),
+            ]);
+        }
     }
 }
